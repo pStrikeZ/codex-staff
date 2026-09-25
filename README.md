@@ -39,6 +39,20 @@ Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--std
 
 ## Install host skills
 
+### Let an agent install it
+
+Paste this into your coding agent:
+
+```text
+Read the raw text of https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md
+(fetch it with curl; do not work from a summary), or the same file in my local codex-staff checkout.
+Follow it to install or update codex-staff for the Claude Code or Pi host I am using, and run one minimal
+ask smoke test with my existing Codex configuration. Report the result and any required restart or reload
+in my language.
+```
+
+### Manual installation
+
 Install directly from the project repository:
 
 **Claude Code:**

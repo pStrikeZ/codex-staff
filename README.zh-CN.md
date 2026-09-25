@@ -39,6 +39,19 @@ node /path/to/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 
 
 ## 安装技能
 
+### 让 Agent 帮你安装
+
+把下面这段提示词直接复制给你的 coding agent：
+
+```text
+请读取 https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md
+的原始全文（用 curl 获取，不要依赖网页摘要；如果已有本地 codex-staff 仓库，就读取其中的同名文件）。
+按照指南，为我正在使用的 Claude Code 或 Pi 安装或更新 codex-staff，并使用我现有的 Codex 配置
+运行一次最小 ask 验证。最后用我的语言报告安装和验证结果，以及是否需要重启或重载。
+```
+
+### 手动安装
+
 直接从项目仓库安装：
 
 **Claude Code：**
