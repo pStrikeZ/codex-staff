@@ -1,6 +1,6 @@
 # Codex Staff
 
-[简体中文](README.zh-CN.md)
+[简体中文](README.zh-CN.md) · [Repository](https://github.com/pStrikeZ/codex-staff)
 
 Delegate work to **Codex CLI** from Claude Code or Pi. Adapted from [agy-staff](https://github.com/keli-wen/agy-staff), with a Codex JSONL execution adapter, persistent jobs, progress snapshots, cancellation and thread continuation. Node.js standard library only; no npm dependencies.
 
@@ -39,12 +39,12 @@ Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--std
 
 ## Install host skills
 
-These commands install the local checkout; no published package or repository URL is assumed.
+Install directly from the project repository:
 
 **Claude Code:**
 
 ```bash
-claude plugin marketplace add /absolute/path/to/codex-staff
+claude plugin marketplace add https://github.com/pStrikeZ/codex-staff.git
 claude plugin install codex-staff@codex-staff
 ```
 
@@ -53,7 +53,7 @@ Restart the host and use `/codex-staff:staffer` or another persona. For a tempor
 **Pi:**
 
 ```bash
-pi install /absolute/path/to/codex-staff
+pi install https://github.com/pStrikeZ/codex-staff.git
 ```
 
 Run `/reload`, then `/skill:codex-staffer` (or `codex-researcher`, `codex-reviewer`, `codex-implementer`, `codex-ask`, `codex-lead`, `codex-jobs`). Pi entrypoints are generated from `skills/`.

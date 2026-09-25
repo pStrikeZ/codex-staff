@@ -1,6 +1,6 @@
-# Install Codex Staff from a local checkout
+# Install Codex Staff
 
-The plugin root is the directory containing `package.json`, `companion/` and `.codex-plugin/`. Use its absolute path in commands below. Do not install Node, Codex, packages or host plugins unless the user's installation request covers those changes.
+The project repository is [pStrikeZ/codex-staff](https://github.com/pStrikeZ/codex-staff). Claude Code and Pi can install directly from its Git URL as shown below. For local use, clone it with `git clone https://github.com/pStrikeZ/codex-staff.git`; the plugin root contains `package.json`, `companion/` and `.codex-plugin/`. Use that checkout's absolute path for local commands. Do not install Node, Codex, packages or host plugins unless the user's installation request covers those changes.
 
 ## Prerequisites and direct use
 
@@ -30,7 +30,7 @@ For local development, Codex caches a versioned copy. A changed checkout is not 
 ## Claude Code
 
 ```bash
-claude plugin marketplace add /absolute/path/to/codex-staff
+claude plugin marketplace add https://github.com/pStrikeZ/codex-staff.git
 claude plugin install codex-staff@codex-staff
 ```
 
@@ -41,7 +41,7 @@ For a released version update, refresh the marketplace and plugin with `claude p
 ## Pi
 
 ```bash
-pi install /absolute/path/to/codex-staff
+pi install https://github.com/pStrikeZ/codex-staff.git
 ```
 
 Run `/reload`. The package's `pi.skills` field exposes only `pi-skills/`, with flat names such as `/skill:codex-staffer` and `/skill:codex-jobs`. The generated skills refer to companion files relative to their installed locations. Keep the entire package together.

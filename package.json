@@ -4,6 +4,14 @@
   "description": "Delegate research, reviews, implementation and general tasks to Codex CLI.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pStrikeZ/codex-staff.git"
+  },
+  "homepage": "https://github.com/pStrikeZ/codex-staff",
+  "bugs": {
+    "url": "https://github.com/pStrikeZ/codex-staff/issues"
+  },
   "keywords": [
     "pi-package",
     "codex",

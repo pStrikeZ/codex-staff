@@ -1,6 +1,6 @@
 # Codex Staff
 
-[English](README.md)
+[English](README.md) · [项目仓库](https://github.com/pStrikeZ/codex-staff)
 
 在 Claude Code 或 Pi 中把任务交给 **Codex CLI**。参照 [agy-staff](https://github.com/keli-wen/agy-staff) 实现，保留角色技能、持久化后台作业、进度快照、取消、会话续接及重启，执行层改为 Codex JSONL 协议。只使用 Node.js 标准库，无 npm 第三方依赖。
 
@@ -39,12 +39,12 @@ node /path/to/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 
 
 ## 安装技能
 
-使用本地目录安装，无需假设项目已经发布到 npm 或 GitHub。
+直接从项目仓库安装：
 
 **Claude Code：**
 
 ```bash
-claude plugin marketplace add /absolute/path/to/codex-staff
+claude plugin marketplace add https://github.com/pStrikeZ/codex-staff.git
 claude plugin install codex-staff@codex-staff
 ```
 
@@ -53,7 +53,7 @@ claude plugin install codex-staff@codex-staff
 **Pi：**
 
 ```bash
-pi install /absolute/path/to/codex-staff
+pi install https://github.com/pStrikeZ/codex-staff.git
 ```
 
 执行 `/reload`，然后使用 `/skill:codex-staffer` 等入口。七个入口分别是 `codex-staffer`、`codex-researcher`、`codex-reviewer`、`codex-implementer`、`codex-ask`、`codex-lead`、`codex-jobs`。
