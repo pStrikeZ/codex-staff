@@ -22,21 +22,6 @@ Delegate work to **Codex CLI** from Claude Code or Pi. Adapted from [agy-staff](
 
 The companion inherits your existing Codex provider, model and reasoning settings. `--model` and `--effort` independently override them. It never silently substitutes a model.
 
-## Try the companion
-
-Run from the workspace you want Codex to work in. Replace `/path/to/codex-staff` with this checkout's absolute path:
-
-```bash
-node /path/to/codex-staff/companion/codex-companion.mjs setup
-node /path/to/codex-staff/companion/codex-companion.mjs ask --prompt "Reply with OK"
-node /path/to/codex-staff/companion/codex-companion.mjs research --prompt "Explain the entrypoints in this project"
-node /path/to/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 10m
-```
-
-Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--stdin`. Prompts reach Codex over stdin without a shell. Long briefs work best as files.
-
-`ask` waits and prints its answer. The four other modes return a background job ID; `wait` prints the saved result. An expiring wait returns exit code **2** and leaves the same job running. Wait again for that ID. Use `observe <id>` for a bounded progress snapshot, `cancel <id>` to stop execution, and `continue --job <id> --prompt <text>` for a follow-up in the same Codex thread. `restart <id>` starts the saved task in a fresh thread.
-
 ## Install host skills
 
 ### Let an agent install it
@@ -44,16 +29,14 @@ Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--std
 Paste this into your coding agent:
 
 ```text
-Read the raw text of https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md
-(fetch it with curl; do not work from a summary), or the same file in my local codex-staff checkout.
-Follow it to install or update codex-staff for the Claude Code or Pi host I am using, and run one minimal
-ask smoke test with my existing Codex configuration. Report the result and any required restart or reload
-in my language.
+Read the raw text of https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md (curl it — do not
+work from a summary) and follow it to install and verify the codex-staff plugin for the harness you are running in.
+Respond in the user's language.
 ```
 
 ### Manual installation
 
-Install directly from the project repository:
+The host downloads the package directly from GitHub:
 
 **Claude Code:**
 
@@ -62,7 +45,7 @@ claude plugin marketplace add https://github.com/pStrikeZ/codex-staff.git
 claude plugin install codex-staff@codex-staff
 ```
 
-Restart the host and use `/codex-staff:staffer` or another persona. For a temporary session, `claude --plugin-dir /absolute/path/to/codex-staff` also loads the plugin.
+Restart the host and use `/codex-staff:staffer` or another persona.
 
 **Pi:**
 
@@ -74,12 +57,27 @@ Run `/reload`, then `/skill:codex-staffer` (or `codex-researcher`, `codex-review
 
 Details: [installation for agents](docs/INSTALL_FOR_AGENTS.md).
 
+## Try the companion
+
+After installation, run from the workspace you want Codex to work in. Replace `/path/to/installed/codex-staff` with the package root registered by your host; see [locating the installed copy](docs/INSTALL_FOR_AGENTS.md#3-verify-the-installed-copy).
+
+```bash
+node /path/to/installed/codex-staff/companion/codex-companion.mjs setup
+node /path/to/installed/codex-staff/companion/codex-companion.mjs ask --prompt "Reply with OK"
+node /path/to/installed/codex-staff/companion/codex-companion.mjs research --prompt "Explain the entrypoints in this project"
+node /path/to/installed/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 10m
+```
+
+Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--stdin`. Prompts reach Codex over stdin without a shell. Long briefs work best as files.
+
+`ask` waits and prints its answer. The four other modes return a background job ID; `wait` prints the saved result. An expiring wait returns exit code **2** and leaves the same job running. Wait again for that ID. Use `observe <id>` for a bounded progress snapshot, `cancel <id>` to stop execution, and `continue --job <id> --prompt <text>` for a follow-up in the same Codex thread. `restart <id>` starts the saved task in a fresh thread.
+
 ## Permissions and state
 
 Matching agy-staff, tool-using modes default to **unrestricted** execution. `ask` always uses a read-only sandbox. To configure restricted defaults:
 
 ```bash
-node /path/to/codex-staff/companion/codex-companion.mjs setup --restrict staffer,research,review,implement
+node /path/to/installed/codex-staff/companion/codex-companion.mjs setup --restrict staffer,research,review,implement
 ```
 
 Restricted research/review use `read-only`; restricted staffer/implement use `workspace-write`. Every run disables interactive approvals (`approval_policy="never"`). Explicit `--restricted` / `--unrestricted` overrides repository defaults. MCP services retain their own permissions, and the launching host must permit Codex to run. `ask` requests no tools in its prompt; this is not a tool-free API.

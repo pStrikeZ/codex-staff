@@ -22,21 +22,6 @@
 
 默认沿用已有的 Codex provider、模型及 reasoning 配置。`--model` 与 `--effort` 可分别覆盖，不会自动换模型。
 
-## 直接使用
-
-从目标工作区执行，将 `/path/to/codex-staff` 替换为本项目的绝对路径：
-
-```bash
-node /path/to/codex-staff/companion/codex-companion.mjs setup
-node /path/to/codex-staff/companion/codex-companion.mjs ask --prompt "只回复 OK"
-node /path/to/codex-staff/companion/codex-companion.mjs research --prompt "调查本项目的入口及调用关系"
-node /path/to/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 10m
-```
-
-任务文本必须通过 `--prompt <文本>`、`--prompt-file <路径>`、`--stdin` 三者之一传入。长任务建议使用文件。文本通过 stdin 交给 Codex，不经 shell 拼接执行。
-
-`ask` 等待并返回答案；其他四种模式立即返回后台作业 ID。`wait` 等待并打印完整结果，等待超时返回 **2**，原作业仍在运行，继续等待同一个 ID 即可。`observe <id>` 查看有长度限制的进度快照；`cancel <id>` 停止执行；`continue --job <id> --prompt <文本>` 在同一 Codex 会话中续接；`restart <id>` 在新会话中重做保存的任务。
-
 ## 安装技能
 
 ### 让 Agent 帮你安装
@@ -44,15 +29,14 @@ node /path/to/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 
 把下面这段提示词直接复制给你的 coding agent：
 
 ```text
-请读取 https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md
-的原始全文（用 curl 获取，不要依赖网页摘要；如果已有本地 codex-staff 仓库，就读取其中的同名文件）。
-按照指南，为我正在使用的 Claude Code 或 Pi 安装或更新 codex-staff，并使用我现有的 Codex 配置
-运行一次最小 ask 验证。最后用我的语言报告安装和验证结果，以及是否需要重启或重载。
+Read the raw text of https://raw.githubusercontent.com/pStrikeZ/codex-staff/master/docs/INSTALL_FOR_AGENTS.md (curl it — do not
+work from a summary) and follow it to install and verify the codex-staff plugin for the harness you are running in.
+Respond in the user's language.
 ```
 
 ### 手动安装
 
-直接从项目仓库安装：
+以下命令由宿主直接从 GitHub 下载并安装：
 
 **Claude Code：**
 
@@ -61,7 +45,7 @@ claude plugin marketplace add https://github.com/pStrikeZ/codex-staff.git
 claude plugin install codex-staff@codex-staff
 ```
 
-重启后使用 `/codex-staff:staffer` 等技能。临时加载也可用 `claude --plugin-dir /absolute/path/to/codex-staff`。
+重启后使用 `/codex-staff:staffer` 等技能。
 
 **Pi：**
 
@@ -73,12 +57,27 @@ pi install https://github.com/pStrikeZ/codex-staff.git
 
 详细安装流程见 [INSTALL_FOR_AGENTS](docs/INSTALL_FOR_AGENTS.md)。
 
+## 直接使用
+
+安装完成后，从目标工作区执行。将 `/path/to/installed/codex-staff` 替换为宿主登记的实际安装目录，定位方法见[验证已安装副本](docs/INSTALL_FOR_AGENTS.md#3-verify-the-installed-copy)。
+
+```bash
+node /path/to/installed/codex-staff/companion/codex-companion.mjs setup
+node /path/to/installed/codex-staff/companion/codex-companion.mjs ask --prompt "只回复 OK"
+node /path/to/installed/codex-staff/companion/codex-companion.mjs research --prompt "调查本项目的入口及调用关系"
+node /path/to/installed/codex-staff/companion/codex-companion.mjs wait <job-id> --timeout 10m
+```
+
+任务文本必须通过 `--prompt <文本>`、`--prompt-file <路径>`、`--stdin` 三者之一传入。长任务建议使用文件。文本通过 stdin 交给 Codex，不经 shell 拼接执行。
+
+`ask` 等待并返回答案；其他四种模式立即返回后台作业 ID。`wait` 等待并打印完整结果，等待超时返回 **2**，原作业仍在运行，继续等待同一个 ID 即可。`observe <id>` 查看有长度限制的进度快照；`cancel <id>` 停止执行；`continue --job <id> --prompt <文本>` 在同一 Codex 会话中续接；`restart <id>` 在新会话中重做保存的任务。
+
 ## 权限及状态
 
 与 agy-staff 一致，使用工具的模式默认 **unrestricted**；`ask` 固定使用只读沙箱。可设置当前项目的受限默认值：
 
 ```bash
-node /path/to/codex-staff/companion/codex-companion.mjs setup --restrict staffer,research,review,implement
+node /path/to/installed/codex-staff/companion/codex-companion.mjs setup --restrict staffer,research,review,implement
 ```
 
 受限 research/review 使用 `read-only`；受限 staffer/implement 使用 `workspace-write`。所有任务均设置 `approval_policy="never"`，不会等待交互式批准。单次调用的 `--restricted` / `--unrestricted` 优先于项目默认值。MCP 服务权限独立于本地沙箱，启动它的宿主仍须具有相应执行权限。`ask` 的“不用工具”是提示词约定，不是禁用全部工具的 API。
