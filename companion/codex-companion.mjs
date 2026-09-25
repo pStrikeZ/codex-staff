@@ -709,7 +709,7 @@ async function dispatch(resolved, prompt, opts) {
   process.stdout.write(
     `Started background ${mode} job.\n` +
       `job id: ${jobId} (pid ${child.pid})\n` +
-      `model: ${resolved.model || '(Codex-config)'}  profile: ${resolved.profile}  timeout: ${resolved.timeout}\n` +
+      `model: ${resolved.model || '(Codex-config)'}  effort: ${resolved.effort || '(Codex-config)'}  profile: ${resolved.profile}  timeout: ${resolved.timeout}\n` +
       `result file (written when the job finishes): ${resultFile}\n` +
       `Collect: run \`wait ${jobId} --timeout 10m\` as a background command ` +
       `(one background wait per job; exit 0 = result printed, 2 = still running — wait again for the same job, without extra progress checks).\n` +
