@@ -42,9 +42,8 @@ test('observe stays bounded after legacy completion; independent reads never con
   for (const command of ['wait', 'result']) {
     const r = run(sb, [command, job.id]);
     assert.equal(r.code, 0); assert.equal(r.stdout, `# Job ${job.id} (research, done)\n\n` + body);
-    assert.match(r.stderr, /NATIVE_DIAGNOSTIC/);
-    assert.doesNotMatch(r.stderr, /OLD_DIAGNOSTIC/);
-    assert.ok(Buffer.byteLength(r.stderr) < 10000);
+    assert.equal(r.stderr, '');
+    assert.match(fs.readFileSync(job.log_file, 'utf8'), /NATIVE_DIAGNOSTIC/);
   }
 });
 
@@ -66,7 +65,13 @@ test('terminal sidecar race and a crash without a result still produce inspectab
   const { sb, job, stateFile } = storedJob('running', { spec_file: '/stored.spec', finished_at: null });
   fs.writeFileSync(job.log_file, 'SIDECAR_WARNING');
   fs.writeFileSync(job.result_file + '.status.json', JSON.stringify({ status: 'done', warnings: true }));
-  for (const command of ['wait', 'result']) assert.match(run(sb, [command, job.id]).stderr, /SIDECAR_WARNING/);
+  for (const command of ['wait', 'result']) {
+    const r = run(sb, [command, job.id]);
+    assert.equal(r.code, 0);
+    assert.equal(r.stdout, `# Job ${job.id} (research, done)\n\n` + body);
+    assert.equal(r.stderr, '');
+  }
+  assert.equal(fs.readFileSync(job.log_file, 'utf8'), 'SIDECAR_WARNING');
   fs.writeFileSync(job.result_file + '.status.json', JSON.stringify({ status: 'error', reason: 'hard_timeout', finished_at: '2026-09-07T00:02:00Z' }));
   const s = observation(sb, job.id, 3);
   assert.equal(s.status, 'error'); assert.equal(s.reason, 'hard_timeout'); assert.equal(s.elapsed_seconds, 120);
@@ -96,10 +101,11 @@ test('observe during a pending wait never duplicates its large final report', as
   const sb = sandbox('observe-with-wait');
   const release = path.join(sb.root, 'release');
   t.after(() => fs.writeFileSync(release, 'finish'));
-  const id = jobIdOf(run(sb, ['staffer', '--prompt', 'report'], { FAKE_CODEX_RELEASE_FILE: release, FAKE_CODEX_RESPONSE: body }).stdout);
+  const id = jobIdOf(run(sb, ['staffer', '--prompt', 'report'], { FAKE_CODEX_RELEASE_FILE: release, FAKE_CODEX_RESPONSE: body, FAKE_CODEX_STDERR: 'RETAINED_DIAGNOSTIC' }).stdout);
   await waitForCalls(sb, 1);
   const waiter = spawn(process.execPath, [COMPANION, 'wait', id], { cwd: sb.repo, stdio: ['ignore', 'pipe', 'pipe'] });
   let stdout = '', stderr = '';
+  waiter.stdout.setEncoding('utf8');
   waiter.stdout.on('data', data => { stdout += data; }); waiter.stderr.on('data', data => { stderr += data; });
   const done = new Promise(resolve => waiter.on('close', resolve));
   const running = run(sb, ['observe', id]);
@@ -111,4 +117,9 @@ test('observe during a pending wait never duplicates its large final report', as
   const terminal = observation(sb, id, 0);
   assert.ok(terminal.result_available);
   assert.equal(stdout, `# Job ${id} (staffer, done)\n\n` + body + '\n');
+  const result = run(sb, ['result', id]);
+  assert.equal(result.code, 0);
+  assert.equal(result.stdout, stdout);
+  assert.equal(result.stderr, '');
+  assert.match(fs.readFileSync(path.join(sb.repo, '.codex-staff', 'jobs', `${id}.log`), 'utf8'), /RETAINED_DIAGNOSTIC/);
 });

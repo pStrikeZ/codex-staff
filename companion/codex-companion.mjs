@@ -997,10 +997,6 @@ function renderJobResponse(initial, { observeOnly = false, plain = false } = {})
     process.exitCode = JOB_EXIT_CODES[status] ?? 1;
     return;
   }
-  // Include warning metadata when the sidecar precedes the registry commit.
-  if (job.status === 'running') {
-    try { job = { ...job, ...JSON.parse(fs.readFileSync(job.result_file + '.status.json', 'utf8')) }; } catch {}
-  }
   if (fs.existsSync(job.result_file)) {
     if (!plain && !(job.json && status === 'done')) process.stdout.write(`# Job ${job.id} (${job.mode}, ${status})\n\n`);
     process.stdout.write(fs.readFileSync(job.result_file, 'utf8'));
@@ -1009,9 +1005,8 @@ function renderJobResponse(initial, { observeOnly = false, plain = false } = {})
     process.stdout.write(JSON.stringify(diagnosticPacket(job), null, 2) + '\n');
     if (status === 'crashed') process.stdout.write(`\n${CRASH_SANDBOX_HINT}\n`);
   }
-  if (status === 'done' && job.warnings) {
-    process.stderr.write(`Job diagnostics (tail, up to 8192 bytes). Full log: ${job.log_file}\n${readTail(job.log_file)}\n`);
-  }
+  // Deliver reports on one stream. Diagnostics remain in job.log_file; emitting
+  // them on stderr can splice them into large reports when hosts merge streams.
   process.exitCode = JOB_EXIT_CODES[status] ?? 1;
 }
 

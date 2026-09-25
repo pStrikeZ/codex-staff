@@ -23,6 +23,7 @@ describe('background job lifecycle', () => {
     const sb = sandbox('lifecycle');
     const started = run(sb, ['research', '--prompt', 'a topic']);
     assert.equal(started.code, 0, started.stderr);
+    assert.match(started.stdout, /model: \(Codex-config\)  effort: \(Codex-config\)/);
     const id = jobIdOf(started.stdout);
 
     const terminal = await waitForJob(sb, id);
@@ -93,13 +94,15 @@ describe('continue inherits the resumed mode default', () => {
 
   test('after research, continue starts a background job', async () => {
     const sb = sandbox('continue-research');
-    const first = run(sb, ['research', '--prompt', 'a topic']);
+    const first = run(sb, ['research', '--model', 'gpt-6-astra', '--effort', 'xhigh', '--prompt', 'a topic']);
+    assert.match(first.stdout, /model: gpt-6-astra  effort: xhigh/);
     assert.equal(first.code, 0, first.stderr);
     await waitForJob(sb, jobIdOf(first.stdout));
 
     const cont = run(sb, ['continue', '--prompt', 'dig into the second part']);
     assert.equal(cont.code, 0, cont.stderr);
     assert.match(cont.stdout, /Started background research job\./);
+    assert.match(cont.stdout, /model: gpt-6-astra  effort: xhigh/);
     const secondId = jobIdOf(cont.stdout);
     assert.equal(await waitForJob(sb, secondId), 'done');
 

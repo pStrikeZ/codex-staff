@@ -156,7 +156,8 @@ test('structured review stays JSON through result, warnings, continuation and re
   const { id, result } = complete(sb, ['review', '--json', '--model', 'chosen-model', '--effort', 'low', '--prompt', 'review'], { FAKE_CODEX_TOUCH_FILE: 'changed.txt' });
   assert.equal(result.code, 0, result.stdout + result.stderr);
   assert.equal(JSON.parse(result.stdout).verdict, 'approve');
-  assert.match(result.stderr, /modified the working tree/);
+  assert.equal(result.stderr, '');
+  assert.match(fs.readFileSync(record(sb, id).log_file, 'utf8'), /modified the working tree/);
   assert.deepEqual(JSON.parse(run(sb, ['result', id]).stdout), JSON.parse(result.stdout));
   const next = complete(sb, ['continue', '--job', id, '--prompt', 'again']);
   assert.equal(next.result.code, 0, next.result.stdout);

@@ -33,7 +33,7 @@ Durations use `ms`, `s`, `m` or `h`. Execution limits must be positive and at mo
 
 ## Review JSON
 
-`review --json` supplies `templates/review.schema.json` to `codex exec --output-schema` and validates the final response. Successful `wait` / `result` output and the saved result contain only JSON, with diagnostics on stderr:
+`review --json` supplies `templates/review.schema.json` to `codex exec --output-schema` and validates the final response. Successful `wait` / `result` output and the saved result contain only JSON, with diagnostics retained in the job log (the `log_file` shown by `status <id>`):
 
 ```json
 {
@@ -59,6 +59,8 @@ Verdicts: `approve`, `request_changes`, `comment`. Each finding has string field
 | `continue --conversation <thread-id> --prompt <text>` | Resume a locally recorded thread |
 | `continue --prompt <text>` | Resume last recorded thread |
 | `restart <id> [--timeout <duration>]` | Saved task in a new thread, with fresh context |
+
+`wait` and `result` deliver the complete report on stdout. Successful delivery does not replay diagnostics on stderr; inspect the `log_file` returned by `status <id>` for retained warnings and logs. A successful `wait` already delivers the report, so a separate `result` call is unnecessary.
 
 `continue` also accepts model, effort, profile, timeout and review JSON options. It inherits the selected job's original cwd, mode, explicit model/effort, profile and schema. Restart retains saved settings and uses a fresh default execution budget unless `--timeout` is supplied. Running threads reject follow-ups; no request is queued. Cancel and confirm terminal status before redirecting active work.
 
