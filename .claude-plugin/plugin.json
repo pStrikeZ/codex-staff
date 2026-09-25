@@ -1,0 +1,15 @@
+{
+  "name": "codex-staff",
+  "version": "0.1.0",
+  "description": "Delegate general tasks, research, reviews and implementation to Codex CLI.",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "delegation",
+    "review",
+    "research"
+  ],
+  "author": {
+    "name": "codex-staff contributors"
+  }
+}

@@ -1,0 +1,4 @@
+codex-staff is adapted from agy-staff v0.7.3 by Keli Wen.
+Upstream: https://github.com/keli-wen/agy-staff
+The MIT license and original copyright are preserved in LICENSE.
+Codex CLI execution, protocol handling, packaging and documentation are adapted here.

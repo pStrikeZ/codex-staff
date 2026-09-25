@@ -1,0 +1,16 @@
+{
+  "name": "codex-staff",
+  "metadata": {
+    "description": "Local Codex Staff skills for delegating tasks to Codex CLI."
+  },
+  "owner": {
+    "name": "codex-staff contributors"
+  },
+  "plugins": [
+    {
+      "name": "codex-staff",
+      "source": "./",
+      "description": "Delegate general tasks, research, reviews and implementation to Codex CLI."
+    }
+  ]
+}

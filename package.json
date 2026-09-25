@@ -1,0 +1,43 @@
+{
+  "name": "codex-staff",
+  "version": "0.1.0",
+  "description": "Delegate research, reviews, implementation and general tasks to Codex CLI.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "codex",
+    "delegation"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "codex-staff": "companion/codex-companion.mjs"
+  },
+  "files": [
+    ".codex-plugin/",
+    ".claude-plugin/",
+    ".agents/plugins/",
+    "skills/",
+    "pi-skills/",
+    "companion/",
+    "templates/",
+    "scripts/generate-pi-skills.mjs",
+    "docs/",
+    "README.zh-CN.md",
+    "NOTICE"
+  ],
+  "scripts": {
+    "generate:pi": "node scripts/generate-pi-skills.mjs",
+    "check:pi": "node scripts/generate-pi-skills.mjs --check",
+    "test": "node --test tests/*.test.mjs",
+    "test:real": "node --test tests/real-codex.integration.mjs",
+    "prepack": "npm run check:pi"
+  },
+  "pi": {
+    "skills": [
+      "./pi-skills"
+    ]
+  }
+}

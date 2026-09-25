@@ -1,0 +1,20 @@
+{
+  "name": "codex-staff",
+  "interface": {
+    "displayName": "Codex Staff"
+  },
+  "plugins": [
+    {
+      "name": "codex-staff",
+      "source": {
+        "source": "local",
+        "path": "."
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Engineering"
+    }
+  ]
+}
