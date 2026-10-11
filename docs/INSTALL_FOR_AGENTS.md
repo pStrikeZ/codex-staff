@@ -14,7 +14,7 @@ Install from `https://github.com/pStrikeZ/codex-staff.git` using the selected ho
 
 - Run `node --version` (20+), `codex --version` and `codex login status`. Authentication stays with Codex. If a prerequisite is missing or login requires user interaction, explain what is needed and let the user complete it; installing additional software is outside this plugin-install request.
 - Preserve the existing Codex provider, model and reasoning settings. Do not replace credentials or choose a different model for verification. The companion needs no npm dependencies, so `npm install` is unnecessary.
-- Use the host named by the user, otherwise the current host: **Claude Code** uses `/plugin` and `/codex-staff:...`; **Pi** uses `pi install` and `/skill:codex-...`. Follow only the matching section below. If the target is unclear, ask which host to install into. This guide installs into Claude Code or Pi; running the installer from another agent does not make that agent the installation target.
+- Use the host named by the user, otherwise the current host: **Claude Code** uses `/plugin` and `/codex-staff:...`; **Pi** uses `pi install` and `/skill:codex-...`; **OpenCode V1** uses `opencode plugin` and native `/codex-*` commands (verified with OpenCode 1.18.34; V2 is not covered). Follow only the matching section below. If the target is unclear, ask which host to install into. This guide installs into Claude Code, Pi or OpenCode V1; running the installer from another agent does not make that agent the installation target.
 
 `CODEX_BIN` may select an existing executable or `.mjs` / `.cjs` / `.js` Node entrypoint. It is a path, not a shell command with embedded flags.
 
@@ -52,9 +52,29 @@ Use `pi list` to confirm the registered source and resolve its package root. Its
 
 Continue to the smoke test, then reload Pi with `/reload` or restart it. Slash commands belong in the host UI, not in a shell. Once reloaded, use `/skill:codex-ask` or another persona.
 
+## 2c. OpenCode V1 — install, update or local development
+
+Use the native plugin installer:
+
+```bash
+opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git' --global
+```
+
+This installs the full package and adds it to the `plugin` array in OpenCode's config, preserving other settings. Do not replace the user's config file. The plugin registers its bundled skills automatically; do not manually clone the repository or add `skills.paths` as an installation workaround. For an explicitly provided local checkout, use `opencode plugin /absolute/path/to/checkout --global` and regenerate modified canonical skills with `npm run generate:skills` in that checkout.
+
+Restart OpenCode, then verify with `opencode debug skill`: expect codex-ask, codex-staffer, codex-researcher, codex-reviewer, codex-implementer, codex-jobs, and codex-lead alongside any other installed skills. OpenCode exposes these directly as `/codex-*` commands. Existing skill permissions remain in effect. Install the entire package, since its companion, templates and references are relative resources.
+
+OpenCode caches the full package spec. Restarting or reinstalling the same Git spec does not guarantee an update, even with `--force`. Select a newer tag or commit, replace the placeholder below, then restart:
+
+```bash
+opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git#<tag-or-commit>' --global --force
+```
+
+Changing the ref creates a fresh cache key; `--force` replaces the configured plugin entry. Do not clear unrelated caches. This adapter covers V1, not V2. For smoke testing, run `/codex-ask reply with OK` after restart, or resolve `../../companion/codex-companion.mjs` from the installed `codex-ask` skill directory (`opencode debug skill` reports its location) and run it with `node` from the user's project directory.
+
 ## 3. Verify the installed copy
 
-Resolve the absolute root downloaded and registered by the selected host: use Claude Code's installed-plugin metadata or Pi's registered package location. Confirm its `package.json`, companion and skill files exist. Run the following commands from a temporary workspace, replacing the path with that installed root:
+Resolve the absolute root downloaded and registered by the selected host: use Claude Code's installed-plugin metadata, Pi's registered package location or the OpenCode skill location reported by `opencode debug skill`. Confirm its `package.json`, companion and skill files exist. Run the following commands from a temporary workspace, replacing the path with that installed root:
 
 ```bash
 node /absolute/path/to/installed/codex-staff/companion/codex-companion.mjs setup

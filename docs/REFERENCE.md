@@ -75,6 +75,24 @@ Verdicts: `approve`, `request_changes`, `comment`. Each finding has string field
 
 `status <id>`, `observe` and `wait` use job state codes. `result` on a running job or one without a saved report is an unavailable-result error (1). Listing status is 0; `cancel` is 0 after confirmed cancellation or when already stopped. `observe` does not read or deliver the full result. A successful Codex turn still needs acceptance against the task's requirements.
 
+## OpenCode
+
+The dependency-free `opencode.mjs` entrypoint implements the OpenCode V1 plugin config hook (range `>=1.18.34 <2`, the same as upstream agy-staff; the opt-in integration test `npm run test:opencode` checks it against a real OpenCode install). Install the full package with `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git' --global`, then restart OpenCode and run `/codex-ask reply with OK`. The companion requires Node.js and an authenticated `codex` on PATH. OpenCode V2 is not covered.
+
+The native installer adds a package entry to the `plugin` array in the OpenCode config. The equivalent configuration is:
+
+```json
+{
+  "plugin": ["codex-staff@git+https://github.com/pStrikeZ/codex-staff.git"]
+}
+```
+
+The plugin appends its absolute bundled `opencode-skills/` directory to `skills.paths`, preserving existing paths and avoiding duplicates. OpenCode discovers seven branded skills and exposes them as same-named slash commands: `/codex-ask`, `/codex-staffer`, `/codex-researcher`, `/codex-reviewer`, `/codex-implementer`, `/codex-jobs` and `/codex-lead`. No command wrappers are installed; existing skill permissions still apply.
+
+`npm run generate:opencode` generates these entrypoints from canonical `skills/` (same mechanism as Pi: asset copying, invocation and sibling-path rewriting, appended `templates/harness-compatibility.md`). `npm run generate:skills` generates both hosts and `npm run check:skills` verifies them. Install the whole package; copying only the plugin file would lose its relative resources. The package intentionally has no `prepack` or `prepare` hook, since those make OpenCode's Git installer invoke nested npm and fail; use `npm run pack:checked` (validates, then packs) and `prepublishOnly` for release checks.
+
+For local development, run `opencode plugin /absolute/path/to/checkout --global`, regenerate with `npm run generate:skills`, and restart OpenCode. For Git installs, OpenCode caches by the full package spec; restart or `--force` alone does not refresh an unchanged spec. Upgrade by choosing a newer tag or commit and running `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git#<tag-or-commit>' --global --force`, then restart. The selected ref must contain this adapter.
+
 ## State and recovery
 
 `.codex-staff/state.json` is a locked, atomically replaced registry. `jobs/<id>` files include `.spec.json`, `.log`, `.result.md`, `.result.md.status.json`, `.events.jsonl` and `.progress.json`. Final status is published after the report is durable. Job registration precedes spawning, and thread occupancy is rechecked while holding the registry lock.

@@ -14,7 +14,7 @@
 
 [简体中文](README.zh-CN.md) · [Repository](https://github.com/pStrikeZ/codex-staff)
 
-Delegate work to **Codex CLI** from Claude Code or Pi. Adapted from [agy-staff](https://github.com/keli-wen/agy-staff), with a Codex JSONL execution adapter, persistent jobs, progress snapshots, cancellation and thread continuation. Node.js standard library only; no npm dependencies.
+Delegate work to **Codex CLI** from Claude Code, Pi or OpenCode. Adapted from [agy-staff](https://github.com/keli-wen/agy-staff), with a Codex JSONL execution adapter, persistent jobs, progress snapshots, cancellation and thread continuation. Node.js standard library only; no npm dependencies.
 
 <p align="center">
   <img src="assets/design.png" alt="Claude Code and Pi delegate to Codex CLI through /codex-staff:*; the codex-staff worker offers staffer, researcher, reviewer and implementer personas." width="100%">
@@ -71,6 +71,16 @@ pi install https://github.com/pStrikeZ/codex-staff.git
 
 Run `/reload`, then `/skill:codex-staffer` (or `codex-researcher`, `codex-reviewer`, `codex-implementer`, `codex-ask`, `codex-lead`, `codex-jobs`). Pi entrypoints are generated from `skills/`.
 
+**OpenCode (V1, `>=1.18.34 <2`):**
+
+```bash
+opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git' --global
+```
+
+Restart OpenCode, then run `/codex-ask reply with OK`. The plugin registers all seven `codex-*` skills and their native slash commands (`/codex-staffer`, `/codex-researcher`, `/codex-reviewer`, `/codex-implementer`, `/codex-ask`, `/codex-lead`, `/codex-jobs`); no separate skills path or command wrappers are needed. The supported OpenCode V1 range is `>=1.18.34 <2`; OpenCode V2 is not covered by this adapter.
+
+OpenCode caches the complete package spec, so restarting does not refresh an unchanged Git spec. To upgrade, choose a newer Git tag or commit and run `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git#<tag-or-commit>' --global --force`, then restart. See [the reference](docs/REFERENCE.md#opencode).
+
 Details: [installation for agents](docs/INSTALL_FOR_AGENTS.md).
 
 ## Try the companion
@@ -109,14 +119,14 @@ The execution deadline defaults to **60 minutes** (ask: **2 minutes**), with a m
 ## Development
 
 ```bash
-npm run generate:pi
-npm run check:pi
+npm run generate:skills
+npm run check:skills
 npm test
 npm pack
 ```
 
 No `npm install` is needed. Tests use an isolated fake Codex executable; the packaging test extracts the actual npm archive and runs its companion. Opt-in real CLI tests use your configured Codex account: see [tests](docs/TESTING.md).
 
-Edit canonical skills in `skills/`, then regenerate `pi-skills/`. Main code is in `companion/`; task prompts and the review schema are in `templates/`. Keep `package.json` and both plugin manifest versions aligned when releasing. Windows process handling has offline coverage; real Windows Codex integration is not verified.
+Edit canonical skills in `skills/`, then regenerate `pi-skills/` and `opencode-skills/` with `npm run generate:skills` (`generate:pi` / `generate:opencode` select one host). Do not edit generated files. Use `npm run pack:checked` to verify freshness before packing; the package deliberately has no `prepack` hook, which would break OpenCode Git installs. Main code is in `companion/`; task prompts and the review schema are in `templates/`. Keep `package.json` and both plugin manifest versions aligned when releasing. Windows process handling has offline coverage; real Windows Codex integration is not verified.
 
 MIT licensed; original agy-staff attribution is preserved in [LICENSE](LICENSE) and [NOTICE](NOTICE).

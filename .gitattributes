@@ -2,3 +2,6 @@
 *.mjs text eol=lf
 *.md text eol=lf
 *.json text eol=lf
+
+pi-skills/** linguist-generated=true
+opencode-skills/** linguist-generated=true

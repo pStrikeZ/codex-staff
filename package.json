@@ -14,11 +14,13 @@
   },
   "keywords": [
     "pi-package",
+    "opencode-plugin",
     "codex",
     "delegation"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "opencode": ">=1.18.34 <2"
   },
   "bin": {
     "codex-staff": "companion/codex-companion.mjs"
@@ -29,20 +31,30 @@
     ".agents/plugins/",
     "skills/",
     "pi-skills/",
+    "opencode-skills/",
+    "opencode.mjs",
     "companion/",
     "templates/",
-    "scripts/generate-pi-skills.mjs",
+    "scripts/generate-skills.mjs",
     "docs/",
     "README.zh-CN.md",
     "NOTICE"
   ],
   "scripts": {
-    "generate:pi": "node scripts/generate-pi-skills.mjs",
-    "check:pi": "node scripts/generate-pi-skills.mjs --check",
+    "generate:pi": "node scripts/generate-skills.mjs --target=pi",
+    "check:pi": "node scripts/generate-skills.mjs --target=pi --check",
+    "generate:opencode": "node scripts/generate-skills.mjs --target=opencode",
+    "check:opencode": "node scripts/generate-skills.mjs --target=opencode --check",
+    "generate:skills": "node scripts/generate-skills.mjs",
+    "check:skills": "node scripts/generate-skills.mjs --check",
     "test": "node --test tests/*.test.mjs",
     "test:real": "node --test tests/real-codex.integration.mjs",
-    "prepack": "npm run check:pi"
+    "test:opencode": "node --test tests/opencode.integration.mjs",
+    "pack:checked": "npm run check:skills && npm pack --ignore-scripts",
+    "prepublishOnly": "npm run check:skills"
   },
+  "main": "./opencode.mjs",
+  "exports": "./opencode.mjs",
   "pi": {
     "skills": [
       "./pi-skills"

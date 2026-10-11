@@ -14,7 +14,7 @@
 
 [English](README.md) · [项目仓库](https://github.com/pStrikeZ/codex-staff)
 
-在 Claude Code 或 Pi 中把任务交给 **Codex CLI**。参照 [agy-staff](https://github.com/keli-wen/agy-staff) 实现，保留角色技能、持久化后台作业、进度快照、取消、会话续接及重启，执行层改为 Codex JSONL 协议。只使用 Node.js 标准库，无 npm 第三方依赖。
+在 Claude Code、Pi 或 OpenCode 中把任务交给 **Codex CLI**。参照 [agy-staff](https://github.com/keli-wen/agy-staff) 实现，保留角色技能、持久化后台作业、进度快照、取消、会话续接及重启，执行层改为 Codex JSONL 协议。只使用 Node.js 标准库，无 npm 第三方依赖。
 
 <p align="center">
   <img src="assets/design.png" alt="Claude Code 与 Pi 通过 /codex-staff:* 委派任务给 Codex CLI；codex-staff 提供 staffer、researcher、reviewer、implementer 四种角色。" width="100%">
@@ -71,6 +71,16 @@ pi install https://github.com/pStrikeZ/codex-staff.git
 
 执行 `/reload`，然后使用 `/skill:codex-staffer` 等入口。七个入口分别是 `codex-staffer`、`codex-researcher`、`codex-reviewer`、`codex-implementer`、`codex-ask`、`codex-lead`、`codex-jobs`。
 
+**OpenCode（V1，`>=1.18.34 <2`）：**
+
+```bash
+opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git' --global
+```
+
+重启 OpenCode 后运行 `/codex-ask reply with OK`。插件会自动注册七个 `codex-*` 技能及其原生斜杠命令（`/codex-staffer`、`/codex-researcher`、`/codex-reviewer`、`/codex-implementer`、`/codex-ask`、`/codex-lead`、`/codex-jobs`），无需单独配置技能路径或命令包装。支持的 OpenCode V1 范围为 `>=1.18.34 <2`，此适配器不覆盖 OpenCode V2。
+
+OpenCode 按完整包规格缓存；仅重启不会刷新相同的 Git 规格。升级时选择新的 Git 标签或提交，运行 `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git#<tag-or-commit>' --global --force`，然后重启。配置与本地开发见[参考手册](docs/REFERENCE.zh-CN.md#opencode)。
+
 详细安装流程见 [INSTALL_FOR_AGENTS](docs/INSTALL_FOR_AGENTS.md)。
 
 ## 直接使用
@@ -109,14 +119,14 @@ node /path/to/installed/codex-staff/companion/codex-companion.mjs setup --restri
 ## 开发与验证
 
 ```bash
-npm run generate:pi
-npm run check:pi
+npm run generate:skills
+npm run check:skills
 npm test
 npm pack
 ```
 
 无需运行 `npm install`。离线测试使用隔离的 Codex 替身，打包测试会解压真实 npm 包并运行其中的 companion。真实 CLI 测试需主动启用，使用现有 Codex 账户，见 [测试说明](docs/TESTING.md)。
 
-编辑 `skills/` 后重新生成 `pi-skills/`。运行代码在 `companion/`，提示模板与审查 schema 在 `templates/`。发布时保持 package.json 和两个插件 manifest 的版本一致。Windows 进程处理有离线测试，真实 Windows Codex 集成尚未验证。
+编辑 `skills/` 后运行 `npm run generate:skills` 重新生成 `pi-skills/` 与 `opencode-skills/`（`generate:pi` / `generate:opencode` 可单独生成）。不要直接编辑生成文件。打包前用 `npm run pack:checked` 检查一致性；包内刻意不设 `prepack` 钩子，否则会破坏 OpenCode 的 Git 安装。运行代码在 `companion/`，提示模板与审查 schema 在 `templates/`。发布时保持 package.json 和两个插件 manifest 的版本一致。Windows 进程处理有离线测试，真实 Windows Codex 集成尚未验证。
 
 MIT 许可，保留原项目的 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。

@@ -68,6 +68,26 @@ continue 支持覆盖模型、effort、权限、时限及 review JSON，默认�
 
 status 单个查询、observe、wait 使用作业状态码；result 对仍运行或没有结果文件的作业返回 1。status 列表返回 0。cancel 确认取消或发现已停止时返回 0。observe 不读取完整结果，需从原 wait 或 result 收集。Codex 进程成功不代表任务验收通过。
 
+<a id="opencode"></a>
+
+## OpenCode
+
+`opencode.mjs` 是无额外依赖的 OpenCode V1 插件，使用 config hook 注册技能，支持范围 `>=1.18.34 <2`，与上游 agy-staff 一致；可用需单独启用的集成测试 `npm run test:opencode` 在真实 OpenCode 上验证。运行 `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git' --global` 安装完整包，重启后运行 `/codex-ask reply with OK`。companion 需要 Node.js 以及 PATH 中已登录的 `codex`。此适配器不覆盖 OpenCode V2。
+
+原生安装器会在 OpenCode 配置的 `plugin` 数组中添加包条目，等价配置为：
+
+```json
+{
+  "plugin": ["codex-staff@git+https://github.com/pStrikeZ/codex-staff.git"]
+}
+```
+
+插件将包内 `opencode-skills/` 的绝对路径追加到 `skills.paths`，保留已有路径并避免重复。OpenCode 会发现七个带前缀的技能，并提供同名原生斜杠命令：`/codex-ask`、`/codex-staffer`、`/codex-researcher`、`/codex-reviewer`、`/codex-implementer`、`/codex-jobs` 和 `/codex-lead`。无需命令包装，已有技能权限仍然适用。
+
+`npm run generate:opencode` 从 `skills/` 生成入口（机制与 Pi 相同：复制资源、改写调用方式与相对路径、附上 `templates/harness-compatibility.md`）。`npm run generate:skills` 同时生成两个环境，`npm run check:skills` 检查一致性。请安装完整包。包内刻意不设 `prepack` / `prepare` 钩子，否则 OpenCode 的 Git 安装会调用嵌套 npm 而失败；请使用 `npm run pack:checked`（先检查再打包）及 `prepublishOnly` 做发布检查。
+
+本地开发时运行 `opencode plugin /absolute/path/to/checkout --global`，修改后运行 `npm run generate:skills` 并重启。Git 安装按完整包规格缓存，仅重启或对相同规格使用 `--force` 不会刷新。升级时选择新的标签或提交，运行 `opencode plugin 'codex-staff@git+https://github.com/pStrikeZ/codex-staff.git#<tag-or-commit>' --global --force`，然后重启；所选引用必须包含此适配器。
+
 ## 状态和恢复
 
 `.codex-staff/state.json` 使用锁和原子替换，作业先登记再启动。每个作业保存规格、日志、结果和结果状态文件；有需要时保留原始 JSONL 事件及进度快照。写入最终结果后才公布终态。多个调用不能同时续接同一个活跃会话。
