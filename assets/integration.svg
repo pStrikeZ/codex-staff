@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 632" role="img" aria-label="codex-staff exposes Codex CLI as a background worker through persona skills and ordinary companion commands. The host agent (Claude Code or Pi) delegates a task, receives a job ID, and waits for it in the background while it keeps working; only an explicit user progress question triggers a bounded snapshot of at most 8 KiB with up to five recent tools. The worker drains the codex exec --json event stream, writes events and progress files, and saves a final report that wait prints. An expiring wait exits with code 2 and leaves execution running. The worker enforces a separate deadline, 60 minutes by default and 120 at most, and 2 minutes for ask.">
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; fill: #202124; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .muted { fill: #5F6368; }
+    .link { fill: #4338CA; }
+    .white { fill: #FFFFFF; }
+    .silver { fill: #BDC1C6; }
+    .label { font-size: 12px; font-weight: 700; fill: #4338CA; letter-spacing: 1.5px; }
+    .sub { font-size: 12px; fill: #5F6368; letter-spacing: 0; font-weight: 400; }
+    .arrowlbl { font-size: 11px; font-weight: 700; fill: #4338CA; }
+  </style>
+  <defs>
+    <marker id="arrow" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#4338CA"/></marker>
+    <marker id="arrow-clay" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#D97757"/></marker>
+    <marker id="arrow-green" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#34A853"/></marker>
+    <marker id="arrow-amber" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#F29900"/></marker>
+    <marker id="arrow-purple" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#9B72CB"/></marker>
+    <marker id="arrow-ink" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="11" refY="5.5" orient="auto"><path d="M0,0 L12,5.5 L0,11 Z" fill="#202124"/></marker>
+    <marker id="arrow-start" markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="1" refY="5.5" orient="auto"><path d="M12,0 L0,5.5 L12,11 Z" fill="#4338CA"/></marker>
+    <linearGradient id="rainbow" x1="0" x2="1" y1="0" y2="0"><stop offset="0.000" stop-color="#4F8BFF"/><stop offset="0.167" stop-color="#4F7BFF"/><stop offset="0.333" stop-color="#5B6BF5"/><stop offset="0.500" stop-color="#5B5BF0"/><stop offset="0.667" stop-color="#7557F2"/><stop offset="0.833" stop-color="#8B5CF6"/><stop offset="1.000" stop-color="#A78BFA"/></linearGradient>
+    <linearGradient id="rainbow-soft" x1="0" x2="1" y1="0" y2="0"><stop offset="0.000" stop-color="#4F8BFF" stop-opacity="0.2"/><stop offset="0.167" stop-color="#4F7BFF" stop-opacity="0.2"/><stop offset="0.333" stop-color="#5B6BF5" stop-opacity="0.2"/><stop offset="0.500" stop-color="#5B5BF0" stop-opacity="0.2"/><stop offset="0.667" stop-color="#7557F2" stop-opacity="0.2"/><stop offset="0.833" stop-color="#8B5CF6" stop-opacity="0.2"/><stop offset="1.000" stop-color="#A78BFA" stop-opacity="0.2"/></linearGradient>
+    <pattern id="grid" width="18" height="18" patternUnits="userSpaceOnUse"><rect x="8" y="8" width="1.6" height="1.6" fill="#DADCE0"/></pattern>
+  </defs>
+  <rect x="1" y="1" width="918" height="630" rx="8" fill="#F8F9FA" stroke="#202124" stroke-width="1.5"/>
+  <rect x="2" y="2" width="916" height="628" rx="8" fill="url(#grid)"/>
+  <g stroke="#5B5BF0" stroke-width="1.5" opacity="0.85"><line x1="20" y1="26" x2="32" y2="26"/><line x1="26" y1="20" x2="26" y2="32"/></g>
+  <g stroke="#5B5BF0" stroke-width="1.5" opacity="0.85"><line x1="888" y1="606" x2="900" y2="606"/><line x1="894" y1="600" x2="894" y2="612"/></g>
+
+  <!-- ===== 01 · AGENT LOOP, unrolled in time (clay) ===== -->
+  <rect x="48" y="56" width="824" height="150" rx="10" fill="#FFFFFF" stroke="#D97757" stroke-width="1.5"/>
+  <text x="62" y="81" class="label" style="fill:#B5573A">01 · AGENT LOOP<tspan class="sub" dx="7">· host turns over time →</tspan></text>
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="688" y="68" width="20" height="2"/><rect x="688" y="70" width="20" height="2"/><rect x="688" y="72" width="20" height="2"/><rect x="688" y="74" width="20" height="2"/><rect x="688" y="76" width="20" height="2"/><rect x="688" y="78" width="20" height="2"/><rect x="688" y="80" width="20" height="2"/><rect x="688" y="82" width="20" height="2"/></g><g fill="#FFFFFF" shape-rendering="crispEdges"><rect x="692" y="72" width="2" height="2"/><rect x="694" y="74" width="2" height="2"/><rect x="692" y="76" width="2" height="2"/><rect x="696" y="78" width="6" height="2"/></g>
+  <text x="716" y="81" font-size="12.5" font-weight="600">Claude Code</text>
+  <g fill="#9B72CB" shape-rendering="crispEdges"><rect x="812" y="68" width="20" height="2"/><rect x="812" y="70" width="20" height="2"/><rect x="812" y="72" width="20" height="2"/><rect x="812" y="74" width="20" height="2"/><rect x="812" y="76" width="20" height="2"/><rect x="812" y="78" width="20" height="2"/><rect x="812" y="80" width="20" height="2"/><rect x="812" y="82" width="20" height="2"/></g><g fill="#FFFFFF" shape-rendering="crispEdges"><rect x="814" y="70" width="14" height="2"/><rect x="818" y="72" width="2" height="2"/><rect x="824" y="72" width="2" height="2"/><rect x="818" y="74" width="2" height="2"/><rect x="824" y="74" width="2" height="2"/><rect x="818" y="76" width="2" height="2"/><rect x="824" y="76" width="2" height="2"/><rect x="818" y="78" width="2" height="2"/><rect x="824" y="78" width="4" height="2"/></g>
+  <text x="840" y="81" font-size="12.5" font-weight="600">Pi</text>
+  <rect x="80" y="96" width="136" height="78" rx="8" fill="#FFFFFF" stroke="#D97757" stroke-width="1.5"/>
+  <rect x="198" y="106" width="8" height="8" fill="#34A853" shape-rendering="crispEdges"/>
+  <text x="90" y="114" font-size="12" font-weight="700" class="mono" style="fill:#B5573A">Delegate</text>
+  <text x="90" y="132" font-size="11" class="muted">Pick a persona skill.</text><text x="90" y="146" font-size="11" class="muted">Run its companion</text><text x="90" y="160" font-size="11" class="muted">command.</text>
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="223" y="130" width="2" height="2"/><rect x="225" y="132" width="2" height="2"/><rect x="227" y="134" width="2" height="2"/><rect x="225" y="136" width="2" height="2"/><rect x="223" y="138" width="2" height="2"/></g>
+  <rect x="236" y="96" width="136" height="78" rx="8" fill="#FFFFFF" stroke="#D97757" stroke-width="1.5"/>
+  <rect x="354" y="106" width="8" height="8" fill="#F29900" shape-rendering="crispEdges"/>
+  <text x="246" y="114" font-size="12" font-weight="700" class="mono" style="fill:#B5573A">Start a wait</text>
+  <text x="246" y="132" font-size="11" class="muted">Use the job ID to</text><text x="246" y="146" font-size="11" class="muted">wait in background.</text><text x="246" y="160" font-size="11" class="muted">Continue other work.</text>
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="379" y="130" width="2" height="2"/><rect x="381" y="132" width="2" height="2"/><rect x="383" y="134" width="2" height="2"/><rect x="381" y="136" width="2" height="2"/><rect x="379" y="138" width="2" height="2"/></g>
+  <rect x="392" y="96" width="136" height="78" rx="8" fill="#FFFFFF" stroke="#DADCE0" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+  <text x="402" y="114" font-size="12" font-weight="700" class="mono" style="fill:#5F6368">Keep working</text>
+  <text x="402" y="132" font-size="11" class="muted">Use other tools,</text><text x="402" y="146" font-size="11" class="muted">delegate more work,</text><text x="402" y="160" font-size="11" class="muted">or talk to the user.</text>
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="535" y="130" width="2" height="2"/><rect x="537" y="132" width="2" height="2"/><rect x="539" y="134" width="2" height="2"/><rect x="537" y="136" width="2" height="2"/><rect x="535" y="138" width="2" height="2"/></g>
+  <rect x="548" y="96" width="136" height="78" rx="8" fill="#FFFFFF" stroke="#D97757" stroke-width="1.5"/>
+  <rect x="666" y="106" width="8" height="8" fill="#9B72CB" shape-rendering="crispEdges"/>
+  <text x="558" y="114" font-size="12" font-weight="700" class="mono" style="fill:#B5573A">If user asks</text>
+  <text x="558" y="132" font-size="11" class="muted">Observe only on a</text><text x="558" y="146" font-size="11" class="muted">user progress request.</text><text x="558" y="160" font-size="11" class="muted">Otherwise wait.</text>
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="691" y="130" width="2" height="2"/><rect x="693" y="132" width="2" height="2"/><rect x="695" y="134" width="2" height="2"/><rect x="693" y="136" width="2" height="2"/><rect x="691" y="138" width="2" height="2"/></g>
+  <rect x="704" y="96" width="136" height="78" rx="8" fill="#FFFFFF" stroke="#D97757" stroke-width="1.5"/>
+  <rect x="822" y="106" width="8" height="8" fill="#202124" shape-rendering="crispEdges"/>
+  <text x="714" y="114" font-size="12" font-weight="700" class="mono" style="fill:#B5573A">Use the result</text>
+  <text x="714" y="132" font-size="11" class="muted">The wait finishes.</text><text x="714" y="146" font-size="11" class="muted">The host returns the</text><text x="714" y="160" font-size="11" class="muted">report to the agent.</text>
+
+  <!-- call / return arrows between the loop and the plugin, coloured per command -->
+  <line x1="128" y1="174" x2="128" y2="296" stroke="#34A853" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+  <line x1="168" y1="296" x2="168" y2="174" stroke="#34A853" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+  <text x="122" y="238" font-size="10" text-anchor="end" class="mono" style="fill:#188038">shell</text>
+  <text x="174" y="238" font-size="10" text-anchor="start" class="mono" style="fill:#188038">job ID</text>
+  <line x1="304" y1="174" x2="304" y2="312" stroke="#F29900" stroke-width="1.8" marker-end="url(#arrow-amber)"/>
+  <text x="312" y="238" font-size="10" text-anchor="start" class="mono" style="fill:#B06000">background command</text>
+  <line x1="596" y1="174" x2="596" y2="296" stroke="#9B72CB" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
+  <line x1="636" y1="296" x2="636" y2="174" stroke="#9B72CB" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
+  <text x="590" y="238" font-size="10" text-anchor="end" class="mono" style="fill:#6A3AB2">shell</text>
+  <text x="642" y="238" font-size="10" text-anchor="start" class="mono" style="fill:#6A3AB2">snapshot ≤ 8 KiB</text>
+  <line x1="772" y1="312" x2="772" y2="174" stroke="#202124" stroke-width="1.8" marker-end="url(#arrow-ink)"/>
+  <text x="780" y="238" font-size="10" text-anchor="start" class="mono" style="fill:#202124">full report</text>
+  <g shape-rendering="crispEdges"><rect x="119" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="119" y="202" width="5" height="8" fill="#202124"/><rect x="132" y="202" width="5" height="8" fill="#202124"/></g><g shape-rendering="crispEdges"><rect x="159" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="159" y="202" width="5" height="8" fill="#202124"/><rect x="172" y="202" width="5" height="8" fill="#202124"/></g><g shape-rendering="crispEdges"><rect x="295" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="295" y="202" width="5" height="8" fill="#202124"/><rect x="308" y="202" width="5" height="8" fill="#202124"/></g><g shape-rendering="crispEdges"><rect x="587" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="587" y="202" width="5" height="8" fill="#202124"/><rect x="600" y="202" width="5" height="8" fill="#202124"/></g><g shape-rendering="crispEdges"><rect x="627" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="627" y="202" width="5" height="8" fill="#202124"/><rect x="640" y="202" width="5" height="8" fill="#202124"/></g><g shape-rendering="crispEdges"><rect x="763" y="202" width="18" height="8" fill="#F8F9FA"/><rect x="763" y="202" width="5" height="8" fill="#202124"/><rect x="776" y="202" width="5" height="8" fill="#202124"/></g>
+
+  <!-- ===== 02 · PLUGIN: bash commands (blue) ===== -->
+  <rect x="48" y="260" width="824" height="112" rx="10" fill="#FFFFFF" stroke="#5B5BF0" stroke-width="1.5"/>
+  <text x="62" y="285" class="label" style="fill:#4338CA">02 · CODEX-STAFF<tspan class="sub" dx="7">· skills guide the agent; companion commands manage the job</tspan></text>
+  <rect x="236" y="312" width="604" height="28" rx="6" fill="#FEF7E0" stroke="#F29900" stroke-width="1.5"/>
+  <text x="246" y="330" font-size="11" font-weight="700" class="mono" style="fill:#B06000">wait &lt;id&gt; --timeout 10m</text>
+  <text x="398" y="330" font-size="10" class="mono" style="fill:#B06000">exit 2: still running</text>
+  <text x="830" y="330" text-anchor="end" font-size="10" font-weight="700" class="mono" style="fill:#202124">prints report</text>
+  <text x="246" y="364" font-size="9.5" class="muted">Expiring wait: exit 2, the job keeps running; wait again.</text>
+  <rect x="80" y="296" width="136" height="60" rx="8" fill="#E6F4EA" stroke="#34A853" stroke-width="1.5"/>
+  <text x="90" y="313" font-size="12" font-weight="700" class="mono" style="fill:#188038">launch</text>
+  <text x="90" y="327" font-size="9.5" class="mono" style="fill:#202124">staffer --prompt "…"</text><text x="90" y="339.5" font-size="9.5" class="" style="fill:#202124">Start a background job.</text><text x="90" y="352" font-size="9.5" class="" style="fill:#202124">Return a job ID.</text>
+  <rect x="548" y="296" width="136" height="60" rx="8" fill="#F3EDFA" stroke="#9B72CB" stroke-width="1.5"/>
+  <text x="558" y="313" font-size="12" font-weight="700" class="mono" style="fill:#6A3AB2">observe &lt;id&gt;</text>
+  <text x="558" y="327" font-size="9.5" class="" style="fill:#202124">Bounded JSON snapshot:</text><text x="558" y="339.5" font-size="9.5" class="" style="fill:#202124">≤ 5 recent tools</text><text x="558" y="352" font-size="9.5" class="" style="fill:#202124">+ response excerpt</text>
+
+  <!-- plugin <-> job arrows -->
+  <line x1="148" y1="356" x2="148" y2="492" stroke="#34A853" stroke-width="1.8" marker-end="url(#arrow-green)"/>
+  <text x="156" y="392" font-size="10" text-anchor="start" class="mono" style="fill:#188038">start worker</text>
+  <line x1="616" y1="444" x2="616" y2="356" stroke="#9B72CB" stroke-width="1.8" marker-end="url(#arrow-purple)"/>
+  <text x="624" y="392" font-size="10" text-anchor="start" class="mono" style="fill:#6A3AB2">observe</text>
+  <line x1="772" y1="444" x2="772" y2="340" stroke="#202124" stroke-width="1.8" marker-end="url(#arrow-ink)"/>
+  <text x="780" y="392" font-size="10" text-anchor="start" class="mono" style="fill:#202124">on completion</text>
+
+  <!-- ===== 03 · BACKGROUND JOB (ink frame, rainbow worker) ===== -->
+  <rect x="48" y="406" width="824" height="166" rx="10" fill="#FFFFFF" stroke="#202124" stroke-width="1.5"/>
+  <text x="62" y="431" class="label" style="fill:#202124">03 · BACKGROUND JOB<tspan class="sub" dx="7">· runs independently of agent turns</tspan></text>
+  <rect x="236" y="444" width="292" height="44" rx="8" fill="#FFFFFF" stroke="#DADCE0" stroke-width="1.5"/>
+  <text x="246" y="461" font-size="11" font-weight="700" class="mono" style="fill:#202124">Event log</text>
+  <text x="246" y="477" font-size="9.5" class="muted">Raw Codex JSONL · &lt;id&gt;.events.jsonl</text>
+  <rect x="548" y="444" width="136" height="44" rx="8" fill="#F3EDFA" stroke="#9B72CB" stroke-width="1.5"/>
+  <text x="558" y="461" font-size="11" font-weight="700" class="mono" style="fill:#6A3AB2">Progress</text>
+  <text x="558" y="477" font-size="9.5" class="muted">&lt;id&gt;.progress.json</text>
+  <rect x="704" y="444" width="136" height="44" rx="8" fill="#FFFFFF" stroke="#202124" stroke-width="1.5"/>
+  <text x="714" y="461" font-size="11" font-weight="700" class="mono" style="fill:#202124">Final report</text>
+  <text x="714" y="477" font-size="9.5" class="muted">&lt;id&gt;.result.md</text>
+  <g shape-rendering="crispEdges"><rect x="377" y="490" width="2" height="2" fill="#5F6368"/><rect x="377" y="495" width="2" height="2" fill="#5F6368"/><rect x="377" y="500" width="2" height="2" fill="#5F6368"/></g><g shape-rendering="crispEdges"><rect x="615" y="490" width="2" height="2" fill="#9B72CB"/><rect x="615" y="495" width="2" height="2" fill="#9B72CB"/><rect x="615" y="500" width="2" height="2" fill="#9B72CB"/></g><g shape-rendering="crispEdges"><rect x="771" y="490" width="2" height="2" fill="#202124"/><rect x="771" y="495" width="2" height="2" fill="#202124"/><rect x="771" y="500" width="2" height="2" fill="#202124"/></g>
+  <rect x="254" y="504" width="586" height="32" rx="6" fill="url(#rainbow-soft)" stroke="url(#rainbow)" stroke-width="1.5"/>
+  <text x="266" y="524" font-size="10.5" class="mono" style="fill:#202124">Worker · drains codex exec --json</text>
+  <g shape-rendering="crispEdges"><rect x="560" y="516" width="6" height="6" fill="#4F8BFF"/><rect x="570" y="520" width="4" height="4" fill="#4F8BFF" opacity="0.6"/><rect x="588" y="516" width="6" height="6" fill="#4F7BFF"/><rect x="598" y="520" width="4" height="4" fill="#4F7BFF" opacity="0.6"/><rect x="616" y="516" width="6" height="6" fill="#5B6BF5"/><rect x="626" y="520" width="4" height="4" fill="#5B6BF5" opacity="0.6"/><rect x="644" y="516" width="6" height="6" fill="#5B5BF0"/><rect x="654" y="520" width="4" height="4" fill="#5B5BF0" opacity="0.6"/><rect x="672" y="516" width="6" height="6" fill="#7557F2"/><rect x="682" y="520" width="4" height="4" fill="#7557F2" opacity="0.6"/><rect x="700" y="516" width="6" height="6" fill="#8B5CF6"/><rect x="710" y="520" width="4" height="4" fill="#8B5CF6" opacity="0.6"/></g>
+  <g fill="#202124" shape-rendering="crispEdges"><rect x="806" y="511" width="2" height="2"/><rect x="806" y="513" width="2" height="2"/><rect x="810" y="513" width="4" height="2"/><rect x="818" y="513" width="4" height="2"/><rect x="806" y="515" width="2" height="2"/><rect x="814" y="515" width="4" height="2"/><rect x="822" y="515" width="4" height="2"/><rect x="806" y="517" width="2" height="2"/><rect x="810" y="517" width="4" height="2"/><rect x="818" y="517" width="4" height="2"/><rect x="806" y="519" width="2" height="2"/><rect x="814" y="519" width="4" height="2"/><rect x="822" y="519" width="4" height="2"/><rect x="806" y="521" width="2" height="2"/><rect x="810" y="521" width="4" height="2"/><rect x="818" y="521" width="4" height="2"/><rect x="806" y="523" width="2" height="2"/><rect x="806" y="525" width="2" height="2"/><rect x="806" y="527" width="2" height="2"/></g>
+  <rect x="104" y="498" width="132" height="44" rx="6" fill="#202124"/>
+  <g fill="#5B5BF0" shape-rendering="crispEdges"><rect x="114" y="508" width="30" height="3"/><rect x="114" y="511" width="30" height="3"/><rect x="114" y="514" width="30" height="3"/><rect x="114" y="517" width="30" height="3"/><rect x="114" y="520" width="30" height="3"/><rect x="114" y="523" width="30" height="3"/><rect x="114" y="526" width="30" height="3"/><rect x="114" y="529" width="30" height="3"/></g><g fill="#FFFFFF" shape-rendering="crispEdges"><rect x="120" y="514" width="3" height="3"/><rect x="123" y="517" width="3" height="3"/><rect x="120" y="520" width="3" height="3"/><rect x="126" y="523" width="9" height="3"/></g>
+  <text x="152" y="516" font-size="11" font-weight="700" class="mono white">Codex CLI</text>
+  <text x="152" y="530" font-size="9" class="silver">exec --json</text>
+  <text x="266" y="554" font-size="9.5" class="muted">Worker deadline: 60m default, 120m max (ask: 2m). Wait expiry leaves it running; cancel &lt;id&gt; stops the job.</text>
+
+  <!-- Three equal footer columns; icons sit in 24px slots with an 8px text gap. -->
+  <g fill="#D97757" shape-rendering="crispEdges"><rect x="70" y="590" width="10" height="2"/><rect x="68" y="592" width="2" height="2"/><rect x="80" y="592" width="2" height="2"/><rect x="66" y="594" width="2" height="2"/><rect x="82" y="594" width="2" height="2"/><rect x="66" y="596" width="2" height="2"/><rect x="82" y="596" width="6" height="2"/><rect x="64" y="598" width="2" height="2"/><rect x="82" y="598" width="6" height="2"/><rect x="64" y="600" width="2" height="2"/><rect x="84" y="600" width="2" height="2"/><rect x="64" y="602" width="2" height="2"/><rect x="64" y="604" width="2" height="2"/><rect x="66" y="606" width="2" height="2"/><rect x="86" y="606" width="2" height="2"/><rect x="66" y="608" width="2" height="2"/><rect x="84" y="608" width="2" height="2"/><rect x="68" y="610" width="2" height="2"/><rect x="82" y="610" width="2" height="2"/><rect x="70" y="612" width="12" height="2"/></g><text x="96" y="607" font-size="12.5">Delegate, then keep working</text>
+  <g fill="#F29900" shape-rendering="crispEdges"><rect x="346" y="592" width="8" height="2"/><rect x="344" y="594" width="2" height="2"/><rect x="354" y="594" width="2" height="2"/><rect x="342" y="596" width="2" height="2"/><rect x="356" y="596" width="2" height="2"/><rect x="340" y="598" width="2" height="2"/><rect x="350" y="598" width="2" height="2"/><rect x="358" y="598" width="2" height="2"/><rect x="340" y="600" width="2" height="2"/><rect x="350" y="600" width="2" height="2"/><rect x="358" y="600" width="2" height="2"/><rect x="340" y="602" width="2" height="2"/><rect x="350" y="602" width="4" height="2"/><rect x="358" y="602" width="2" height="2"/><rect x="340" y="604" width="2" height="2"/><rect x="358" y="604" width="2" height="2"/><rect x="342" y="606" width="2" height="2"/><rect x="356" y="606" width="2" height="2"/><rect x="344" y="608" width="2" height="2"/><rect x="354" y="608" width="2" height="2"/><rect x="346" y="610" width="8" height="2"/></g><text x="370" y="607" font-size="12.5">Resume threads with continue</text>
+  <g fill="#4338CA" shape-rendering="crispEdges"><rect x="619" y="592" width="2" height="2"/><rect x="627" y="592" width="2" height="2"/><rect x="619" y="594" width="2" height="2"/><rect x="627" y="594" width="2" height="2"/><rect x="617" y="596" width="16" height="2"/><rect x="617" y="598" width="16" height="2"/><rect x="617" y="600" width="16" height="2"/><rect x="619" y="602" width="12" height="2"/><rect x="621" y="604" width="8" height="2"/><rect x="623" y="606" width="4" height="2"/><rect x="623" y="608" width="4" height="2"/></g><text x="644" y="607" font-size="12.5"><tspan font-weight="700" fill="#4338CA">Skills + companion cmds</tspan></text>
+</svg>

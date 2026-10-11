@@ -2,3 +2,4 @@ codex-staff is adapted from agy-staff v0.7.3 by Keli Wen.
 Upstream: https://github.com/keli-wen/agy-staff
 The MIT license and original copyright are preserved in LICENSE.
 Codex CLI execution, protocol handling, packaging and documentation are adapted here.
+The artwork generators in scripts/ (gen_badges.py, gen_logo.py, gen_design.py, gen-diagrams.mjs, gen_design_png.sh) are adapted from agy-staff (MIT, Keli Wen), via the agy-crew fork.

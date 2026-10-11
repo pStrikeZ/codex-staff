@@ -1,8 +1,24 @@
+<p align="center">
+  <img src="assets/logo/codex-staff.svg" alt="CODEX-STAFF" height="56">
+</p>
+
+<p align="center">
+  <img src="assets/badges/powered-by-codex-cli.svg" alt="由 Codex CLI 驱动">
+  <img src="assets/badges/claude-code-plugin.svg" alt="Claude Code 插件">
+  <img src="assets/badges/pi-package.svg" alt="Pi 包">
+  <img src="assets/badges/license-mit.svg" alt="许可证：MIT">
+  <img src="assets/badges/deps-none.svg" alt="无依赖（仅 Node.js 标准库）">
+</p>
+
 # Codex Staff
 
 [English](README.md) · [项目仓库](https://github.com/pStrikeZ/codex-staff)
 
 在 Claude Code 或 Pi 中把任务交给 **Codex CLI**。参照 [agy-staff](https://github.com/keli-wen/agy-staff) 实现，保留角色技能、持久化后台作业、进度快照、取消、会话续接及重启，执行层改为 Codex JSONL 协议。只使用 Node.js 标准库，无 npm 第三方依赖。
+
+<p align="center">
+  <img src="assets/design.png" alt="Claude Code 与 Pi 通过 /codex-staff:* 委派任务给 Codex CLI；codex-staff 提供 staffer、researcher、reviewer、implementer 四种角色。" width="100%">
+</p>
 
 | 技能 | 执行命令 | 用途 |
 | --- | --- | --- |
@@ -71,6 +87,10 @@ node /path/to/installed/codex-staff/companion/codex-companion.mjs wait <job-id> 
 任务文本必须通过 `--prompt <文本>`、`--prompt-file <路径>`、`--stdin` 三者之一传入。长任务建议使用文件。文本通过 stdin 交给 Codex，不经 shell 拼接执行。
 
 `ask` 等待并返回答案；其他四种模式立即返回后台作业 ID。`wait` 等待并打印完整结果，等待超时返回 **2**，原作业仍在运行，继续等待同一个 ID 即可。`observe <id>` 查看有长度限制的进度快照；`cancel <id>` 停止执行；`continue --job <id> --prompt <文本>` 在同一 Codex 会话中续接；`restart <id>` 在新会话中重做保存的任务。
+
+<p align="center">
+  <a href="assets/integration.svg"><img src="assets/integration.png" alt="集成时序图：主代理循环委派并等待，codex-staff 提供 companion 命令，后台作业运行 Codex CLI 并保存事件、进度和最终报告。" width="100%"></a>
+</p>
 
 ## 权限及状态
 

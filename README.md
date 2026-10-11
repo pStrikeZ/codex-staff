@@ -1,8 +1,24 @@
+<p align="center">
+  <img src="assets/logo/codex-staff.svg" alt="CODEX-STAFF" height="56">
+</p>
+
+<p align="center">
+  <img src="assets/badges/powered-by-codex-cli.svg" alt="powered by: Codex CLI">
+  <img src="assets/badges/claude-code-plugin.svg" alt="Claude Code plugin">
+  <img src="assets/badges/pi-package.svg" alt="Pi package">
+  <img src="assets/badges/license-mit.svg" alt="license: MIT">
+  <img src="assets/badges/deps-none.svg" alt="deps: none (Node.js standard library only)">
+</p>
+
 # Codex Staff
 
 [简体中文](README.zh-CN.md) · [Repository](https://github.com/pStrikeZ/codex-staff)
 
 Delegate work to **Codex CLI** from Claude Code or Pi. Adapted from [agy-staff](https://github.com/keli-wen/agy-staff), with a Codex JSONL execution adapter, persistent jobs, progress snapshots, cancellation and thread continuation. Node.js standard library only; no npm dependencies.
+
+<p align="center">
+  <img src="assets/design.png" alt="Claude Code and Pi delegate to Codex CLI through /codex-staff:*; the codex-staff worker offers staffer, researcher, reviewer and implementer personas." width="100%">
+</p>
 
 | Skill | Companion command | Purpose |
 | --- | --- | --- |
@@ -71,6 +87,10 @@ node /path/to/installed/codex-staff/companion/codex-companion.mjs wait <job-id> 
 Use exactly one task source: `--prompt <text>`, `--prompt-file <path>` or `--stdin`. Prompts reach Codex over stdin without a shell. Long briefs work best as files.
 
 `ask` waits and prints its answer. The four other modes return a background job ID; `wait` prints the saved result. An expiring wait returns exit code **2** and leaves the same job running. Wait again for that ID. Use `observe <id>` for a bounded progress snapshot, `cancel <id>` to stop execution, and `continue --job <id> --prompt <text>` for a follow-up in the same Codex thread. `restart <id>` starts the saved task in a fresh thread.
+
+<p align="center">
+  <a href="assets/integration.svg"><img src="assets/integration.png" alt="Integration timeline: the agent loop delegates and waits, codex-staff exposes companion commands, and a background job runs Codex CLI and saves events, progress and the final report." width="100%"></a>
+</p>
 
 ## Permissions and state
 
